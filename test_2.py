@@ -1,7 +1,7 @@
 import json
 import requests
 import matplotlib.pyplot as plt
-from PIL import Image
+#from PIL import Image
 
 with open("data.json") as f:
     data = json.load(f)
@@ -36,12 +36,12 @@ plt.plot(last_twenty_chart)
 plt.xticks(range(1, 20))
 plt.title(f"{ticker}")
 plt.savefig("chart.png")
-chart = Image.open("chart.png")
+#chart = Image.open("chart.png")
 
 output = f"{ticker} | R {price} | MCap {round((mcap_mn / 1000), 1)} R bn | VS ATH {round(vs_ath)}% | VS IPO {round(vs_ipo)}% | EV/EBITDA {ev_ebitda:.1f} | P/E {round(p_e, 1)} | DY {round(dy, 1)}% | FF {ff}% | ADTV {adtv} R mn"
 
 print(output)
-chart.show()
+#chart.show()
 
 with open("data.json", "w") as f:
     json.dump(data, f)
