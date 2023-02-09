@@ -24,7 +24,7 @@
         ticker = user_input.value.strip().upper()
         
         if ticker in data.keys:
-          stock = pyodide.http.open_url(https://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities/" + ticker +".json")
+          stock = pyodide.http.open_url("https://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities/" + ticker +".json")
           #stock = json.loads(requests.get("https://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities/" + ticker +".json").text)
           price = float(stock["marketdata"]["data"][0][12])
  
