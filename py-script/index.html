@@ -62,7 +62,7 @@ async def func(url):
 	  vs_ipo = (price / data[ticker]["ipo"] - 1) * 100
 	  ff = data[ticker]["ff"]
 
-	last_twenty = [round(day[5] / 1000000, 1) for day in history["history"]["data"]][-20:]
+	last_twenty = [round(day[5] / int(1000000), 1) for day in history["history"]["data"]][-20:]
 	adtv = round(sum(last_twenty) / len(last_twenty))
 
 #	chart = [day[9] for day in history["history"]["data"]][-20:]
