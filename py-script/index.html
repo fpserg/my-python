@@ -6,11 +6,7 @@
     <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
     <script defer src="https://pyscript.net/latest/pyscript.js"></script>
   </head>
-  <body>
     <py-config>
-      packages = [
-        "json",
-        "requests"]
     </py-config>
     <input id="add-ticker" />
     <button py-click="func()" id="ticker-btn" class="py-button">Go!</button>
@@ -20,7 +16,7 @@
       container = Element("output")
       def func():
         import json
-        import requests
+        import pyodide.http
         
         with open("data.json") as f:
           data = json.load(f)
@@ -28,7 +24,8 @@
         ticker = user_input.value.strip().upper()
         
         if ticker in data.keys:
-          stock = json.loads(requests.get("https://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities/" + ticker +".json").text)
+          stock = pyodide.http.open_url(https://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities/" + ticker +".json")
+          #stock = json.loads(requests.get("https://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities/" + ticker +".json").text)
           price = float(stock["marketdata"]["data"][0][12])
  
         container.write(f"{ticker}: {price}")
