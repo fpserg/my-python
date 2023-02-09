@@ -6,33 +6,35 @@
     <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
     <script defer src="https://pyscript.net/latest/pyscript.js"></script>
   </head>
-    <py-config>
-    </py-config>
-    <input id="add-ticker" />
-    <button py-click="func()" id="ticker-btn" class="py-button">Go!</button>
+  <body>
+   <input id="add-ticker" />
+   <button py-click="func(urls)" id="ticker-btn" class="py-button">Go!</button>
     <div id="output"></div>
     <py-script>
-      user_input = Element("add-ticker")
-      container = Element("output")
-      async def func():
-        import json
-        import pyodide.http
-        
-        with open("data.json") as f:
-          data = json.load(f)
-          
-        ticker = user_input.value.strip().upper()
-        
-        if ticker in data.keys:
-          stock = await pyodide.http.pyfetch("https://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities/" + ticker +".json")
-          #stock = json.loads(requests.get("https://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities/" + ticker +".json").text)
-          price = float(stock["marketdata"]["data"][0][12])
- 
-        container.write(f"{ticker}: {price}")
+      import asyncio
+      from pyodide.http import pyfetch
+      import json
 
+      ticker_ele = Element("add-ticker")
       
-      
-    </py-script>
+      ticker = ticker_ele.value.strip().upper()
 
-  </body>
-</html>
+      urls = "https://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities/" + ticker +".json"
+
+      c = Element("output")
+      
+      async def func(url):
+        
+        #ticker = ticker_ele.value.strip().upper()
+
+        #urls = "https://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities/" + ticker +".json"
+
+        
+
+
+        response = await pyfetch(urls)
+        stock = await response.json()
+        price = float(stock["marketdata"]["data"][0][12])
+        c.write(price)
+
+      </py-script>
