@@ -34,7 +34,7 @@ async def func(url):
 	ticker = ticker_ele.value.strip().upper()
 
 	urls = "https://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities/" + ticker +".json"
-	data_url = "https://fpserg.github.io/my-python/data.json"
+	data_url = "https://fpserg.github.io/my-python/py-script/data.json"
 	history_url = "https://iss.moex.com/iss/history/engines/stock/markets/shares/securities/" + ticker + ".json?from=2023-01-01"
 
 	response = await pyfetch(urls)
