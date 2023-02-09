@@ -7,34 +7,73 @@
     <script defer src="https://pyscript.net/latest/pyscript.js"></script>
   </head>
   <body>
+  <!-- <py-config>
+  packages = ["matplotlib"] 
+  </py-config> -->
    <input id="add-ticker" />
    <button py-click="func(urls)" id="ticker-btn" class="py-button">Go!</button>
     <div id="output"></div>
+    
     <py-script>
-      import asyncio
-      from pyodide.http import pyfetch
-      import json
+import asyncio
+from pyodide.http import pyfetch
+import json
+#import matplotlib as plt
 
-      ticker_ele = Element("add-ticker")
-      
-      ticker = ticker_ele.value.strip().upper()
+ticker_ele = Element("add-ticker")
 
-      urls = "https://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities/" + ticker +".json"
+ticker = ticker_ele.value.strip().upper()
 
-      c = Element("output")
-      
-      async def func(url):
-        
-        #ticker = ticker_ele.value.strip().upper()
+urls = "https://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities/" + ticker +".json"
 
-        #urls = "https://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities/" + ticker +".json"
+c = Element("output")
 
-        
+async def func(url):
 
+	ticker = ticker_ele.value.strip().upper()
 
-        response = await pyfetch(urls)
-        stock = await response.json()
-        price = float(stock["marketdata"]["data"][0][12])
-        c.write(price)
+	urls = "https://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities/" + ticker +".json"
+	data_url = "https://fpserg.github.io/my-python/data.json"
+	history_url = "https://iss.moex.com/iss/history/engines/stock/markets/shares/securities/" + ticker + ".json?from=2023-01-01"
 
-      </py-script>
+	response = await pyfetch(urls)
+	data_response = await pyfetch(data_url)
+	history_response = await pyfetch(history_url)
+
+	stock = await response.json()
+	data = await data_response.json()
+	history = await history_response.json()
+
+	if ticker in data.keys():
+
+	  price = float(stock["marketdata"]["data"][0][12])
+	  
+	  mcap_mn = price * data[ticker]["shares_mn"]
+	  ev_mn = mcap_mn + data[ticker]["net_debt_mn"]
+
+	  data[ticker]["price"] = price
+	  data[ticker]["mcap_mn"] = mcap_mn
+	  data[ticker]["ev_mn"] = ev_mn
+
+	  ev_ebitda = ev_mn / data[ticker]["ebitda_1_mn"]
+	  p_e = mcap_mn / data[ticker]["np_1_mn"]
+	  dy = data[ticker]["dps_1"] / price * 100
+	  vs_ath = (price / data[ticker]["ath"] - 1) * 100
+	  vs_ipo = (price / data[ticker]["ipo"] - 1) * 100
+	  ff = data[ticker]["ff"]
+
+	last_twenty = [round(day[5] / 1000000, 1) for day in history["history"]["data"]][-20:]
+	adtv = round(sum(last_twenty) / len(last_twenty))
+
+#	chart = [day[9] for day in history["history"]["data"]][-20:]
+#	plt.plot(chart)
+#	plt.xticks(range(22))
+#	plt.title(f"{ticker}")
+
+	output = f"{ticker} | R {price} | MCap {round((mcap_mn / 1000), 1)} R bn | VS ATH {round(vs_ath)}% | VS IPO {round(vs_ipo)}% | EV/		EBITDA {ev_ebitda:.1f} | P/E {round(p_e, 1)} | DY {round(dy, 1)}% | FF {ff}% | ADTV {adtv} R mn"
+
+	c.write(output)       
+
+</py-script>
+  </body>
+</html>
