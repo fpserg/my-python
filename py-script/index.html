@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>py-script</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+  </head>
+  <body>
+   <input id="add-ticker" />
+   <button py-click="func()" id="ticker-btn" class="py-button">Go!</button>
+    <div id="output"></div>
+    <py-script>
+      user_input = Element("add-ticker")
+      container = Element("output")
+      def func():
+        ticker = user_input.value.strip().upper()
+        container.write(ticker)
+        container.write(f"some info on {ticker}")
+
+      
+      
+    </py-script>
+
+  </body>
+</html>
