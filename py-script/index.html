@@ -14,7 +14,7 @@
     <py-script>
       user_input = Element("add-ticker")
       container = Element("output")
-      def func():
+      async def func():
         import json
         import pyodide.http
         
@@ -24,7 +24,7 @@
         ticker = user_input.value.strip().upper()
         
         if ticker in data.keys:
-          stock = pyodide.http.open_url("https://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities/" + ticker +".json")
+          stock = await pyodide.http.pyfetch("https://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities/" + ticker +".json")
           #stock = json.loads(requests.get("https://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities/" + ticker +".json").text)
           price = float(stock["marketdata"]["data"][0][12])
  
