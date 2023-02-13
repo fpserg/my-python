@@ -48,6 +48,8 @@ async def func(url):
 	if ticker in data.keys():
 
 	  price = float(stock["marketdata"]["data"][0][12])
+	  if price == False:
+	    price = float(stock["marketdata"]["data"][0][18])
 	  
 	  mcap_mn = price * data[ticker]["shares_mn"]
 	  ev_mn = mcap_mn + data[ticker]["net_debt_mn"]
