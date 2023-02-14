@@ -45,25 +45,25 @@ async def func(url):
 	data = await data_response.json()
 	history = await history_response.json()
 
-        if ticker in data.keys():
-        	try:
-			price = float(stock["marketdata"]["data"][0][12])
-		except TypeError:
-			price = float(stock["marketdata"]["data"][0][24])
-	  
-	  mcap_mn = price * data[ticker]["shares_mn"]
-	  ev_mn = mcap_mn + data[ticker]["net_debt_mn"]
+	if ticker in data.keys():
+	    try:
+	      price = float(stock["marketdata"]["data"][0][12])
+	    except TypeError:
+	      price = float(stock["marketdata"]["data"][0][24])
+	    
+	    mcap_mn = price * data[ticker]["shares_mn"]
+	    ev_mn = mcap_mn + data[ticker]["net_debt_mn"]
 
-	  data[ticker]["price"] = price
-	  data[ticker]["mcap_mn"] = mcap_mn
-	  data[ticker]["ev_mn"] = ev_mn
+	    data[ticker]["price"] = price
+	    data[ticker]["mcap_mn"] = mcap_mn
+	    data[ticker]["ev_mn"] = ev_mn
 
-	  ev_ebitda = ev_mn / data[ticker]["ebitda_1_mn"]
-	  p_e = mcap_mn / data[ticker]["np_1_mn"]
-	  dy = data[ticker]["dps_1"] / price * 100
-	  vs_ath = (price / data[ticker]["ath"] - 1) * 100
-	  vs_ipo = (price / data[ticker]["ipo"] - 1) * 100
-	  ff = data[ticker]["ff"]
+	    ev_ebitda = ev_mn / data[ticker]["ebitda_1_mn"]
+	    p_e = mcap_mn / data[ticker]["np_1_mn"]
+	    dy = data[ticker]["dps_1"] / price * 100
+	    vs_ath = (price / data[ticker]["ath"] - 1) * 100
+	    vs_ipo = (price / data[ticker]["ipo"] - 1) * 100
+	    ff = data[ticker]["ff"]
 
 	last_twenty = [round(day[5] / 1000 / 1000, 1) for day in history["history"]["data"]][-20:]
 	adtv = round(sum(last_twenty) / len(last_twenty))
