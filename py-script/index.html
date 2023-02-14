@@ -46,9 +46,9 @@ async def func(url):
 	history = await history_response.json()
 
 	if ticker in data.keys():
-
-	  price = float(stock["marketdata"]["data"][0][12])
-	  if price == False:
+    try:
+      price = float(stock["marketdata"]["data"][0][12])
+    except TypeError:
 	    price = float(stock["marketdata"]["data"][0][24])
 	  
 	  mcap_mn = price * data[ticker]["shares_mn"]
