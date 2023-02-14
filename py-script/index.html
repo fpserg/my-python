@@ -45,7 +45,7 @@ async def func(url):
 	data = await data_response.json()
 	history = await history_response.json()
 
-	if ticker in data.keys():
+  if ticker in data.keys():
     try:
       price = float(stock["marketdata"]["data"][0][12])
     except TypeError:
