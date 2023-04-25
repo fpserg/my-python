@@ -73,7 +73,7 @@ async def func(url):
 #	plt.xticks(range(22))
 #	plt.title(f"{ticker}")
 
-	output = f"{ticker} | R {price} | MCap {round((mcap_mn / 1000), 1)} R bn | VS ATH {round(vs_ath)}% | VS IPO {round(vs_ipo)}% | EV/		EBITDA {ev_ebitda:.1f} | P/E {round(p_e, 1)} | DY {round(dy, 1)}% | FF {ff}% | ADTV {adtv} R mn"
+	output = f"{ticker} | R {price} | MCap {round((mcap_mn / 1000), 1)} R bn | VS ATH {round(vs_ath)}% | VS IPO {round(vs_ipo)}% | EV/EBITDA {ev_ebitda:.1f} | P/E {round(p_e, 1)} | DY {round(dy, 1)}% | FF {ff:.1f}% | ADTV {adtv} R mn"
 
 	c.write(output)       
 
